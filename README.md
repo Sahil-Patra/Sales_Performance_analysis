@@ -6,16 +6,10 @@ Sales Performance Analysis is the process of evaluating and interpreting sales d
 - [Overview](#Overview)
 - [Objective](#Objective)
 - [Key feature](#Key-Features)
-- [Project](#Project)
 - [DataSet](#dataset)
 - [Data Cleaning and Preparation](#Data-Cleaning-and-Preparation)
 - [Key Insights](#Key-Insights)
-- [Suggestion](#Suggestion)
-- [Dashboard Navigation Guide](#Dashboard-Navigation-Guide)
-- [Tools and Technologies](#Tools-and-Technologies)
-- [Business Impact](#Business-Impact)
 - [Future Enhancements](#Future-Enhancements)
-- [Installation and Setup](#Installation-and-Setup)
 - [Contact](#contact)
 
 ## Overview
@@ -61,46 +55,140 @@ The dashboards are built using only one dataset, which is Superstore sales datas
 ### Data Cleaning and Preparation
 The dataset was preprocessed to handle missing values, standardize categorical features, and transform the data for efficient analysis in Power BI. Outliers were examined and addressed where necessary to improve data quality.
 
+'''total_sales = df['sales'].sum()
+total_profit = df['profit'].sum()
+
+print(f"Total Sales: ${total_sales:.2f}")
+print(f"Total Profit: ${total_profit:.2f}")'''
+
+Total Sales: $2297200.86
+Total Profit: $286397.02
+
+'''top_products = df.groupby('product_name')['sales'].sum().sort_values(ascending=False).head(10)
+print("Top Products:\n", top_products)'''
+ product_name
+Canon imageCLASS 2200 Advanced Copier                                          61599.824
+Fellowes PB500 Electric Punch Plastic Comb Binding Machine with Manual Bind    27453.384
+Cisco TelePresence System EX90 Videoconferencing Unit                          22638.480
+HON 5400 Series Task Chairs for Big and Tall                                   21870.576
+GBC DocuBind TL300 Electric Binding System                                     19823.479
+GBC Ibimaster 500 Manual ProClick Binding System                               19024.500
+Hewlett Packard LaserJet 3310 Copier                                           18839.686
+HP Designjet T520 Inkjet Large Format Printer - 24" Color                      18374.895
+GBC DocuBind P400 Electric Binding System                                      17965.068
+High Speed Automatic Electric Letter Opener                                    17030.312
+
+'''top_regions = df.groupby('region')['sales'].sum().sort_values(ascending=False)
+print("Top Regions:\n", top_regions)'''
+
+ region
+West       725457.8245
+East       678781.2400
+Central    501239.8908
+South      391721.9050
+
+'''products = df.groupby('product_name')['profit'].sum().sort_values(ascending=False).head(10)
+print("Top Products:\n", products)'''
+
+product_name
+Canon imageCLASS 2200 Advanced Copier                                          25199.9280
+Fellowes PB500 Electric Punch Plastic Comb Binding Machine with Manual Bind     7753.0390
+Hewlett Packard LaserJet 3310 Copier                                            6983.8836
+Canon PC1060 Personal Laser Copier                                              4570.9347
+HP Designjet T520 Inkjet Large Format Printer - 24" Color                       4094.9766
+Ativa V4110MDD Micro-Cut Shredder                                               3772.9461
+3D Systems Cube Printer, 2nd Generation, Magenta                                3717.9714
+Plantronics Savi W720 Multi-Device Wireless Headset System                      3696.2820
+Ibico EPK-21 Electric Binding System                                            3345.2823
+Zebra ZM400 Thermal Label Printer                                               3343.5360
+
+'''regions = df.groupby('region')['profit'].sum().sort_values(ascending=False)
+print("Top Regions:\n", regions)'''
+
+ region
+West       108418.4489
+East        91522.7800
+South       46749.4303
+Central     39706.3625
+
+'''sns.barplot(x='discount', y='sales', data=df)
+plt.title('Discount vs Sales')
+plt.show()'''
+
+'''category_margin = df.groupby('category')['profit_margin'].mean()
+print("Average Profit Margin by Category:\n", category_margin)
+
+sns.barplot(x=category_margin.index, y=category_margin.values)
+plt.title('Profit Margin by Category')
+plt.show()'''
+
+category
+Furniture          0.038784
+Office Supplies    0.138030
+Technology         0.156138
+
+'''numerical_cols = ['sales', 'profit', 'discount', 'quantity', 'profit_margin']
+correlation_matrix = df[numerical_cols].corr()
+plt.figure(figsize=(8, 6))
+sns.heatmap(correlation_matrix, annot=True, cmap='Greens', fmt='.2f')
+plt.title('Correlation Matrix')
+plt.show()'''
+
+'''monthly_sales = ddf.groupby(pd.Grouper(key='order_date', freq='M'))['sales'].sum()
+
+# Decompose the time series
+result = seasonal_decompose(monthly_sales, model='additive', period=12)
+result.plot()
+plt.show()
+
+# Forecasting with Holt-Winters
+model = ExponentialSmoothing(monthly_sales, trend='add', seasonal='add', seasonal_periods=12).fit()
+forecast = model.forecast(12)
+
+# Plot forecast
+plt.figure(figsize=(12,6))
+plt.plot(monthly_sales, label='Actual Sales')
+plt.plot(forecast, label='Forecasted Sales', linestyle='--')
+plt.legend()
+plt.title('Sales Forecast')
+plt.show()'''
+
+'''ddf['year_month'] = ddf['order_date'].dt.to_period('M')
+monthly_sales = ddf.groupby('year_month')['sales'].sum().reset_index()
+monthly_sales['sales_growth'] = monthly_sales['sales'].pct_change() * 100'''
+
+'''from statsmodels.tsa.stattools import adfuller
+
+print('Results of Dickey-Fuller Test:')
+dftest = adfuller(df['sales'], autolag = 'AIC')
+
+dfoutput = pd.Series(dftest[0:4], index = ['Test Statistic' , 'p-value', '#lags Used', ' Number of Observations Used'])
+for key, value in dftest[4].items():
+    dfoutput['Critical Value (%s)' %key] = value'''
+
+Results of Dickey-Fuller Test:
+Test Statistic                   -98.890821
+p-value                            0.000000
+#lags Used                         0.000000
+ Number of Observations Used    9993.000000
+Critical Value (1%)               -3.431005
+Critical Value (5%)               -2.861829
+Critical Value (10%)              -2.566924
+
+
 ## Key Insights
 1. Certain age groups and geographic regions show higher churn rates. Senior citzens are less likely to churn than non-senior citizens.
-2. Customers on month-to-month contracts have a significantly higher churn rate compared to those on long-term contracts.
-3. High monthly charges are correlated with a higher likelihood of churn.
-4. Identifying customers with medium to high churn risk allows for targeted retention efforts, such as personalized offers or loyalty programs.
-5. The customr churn rate last month was 27%, which means that our of 7043 customers, 1869 left the company.
-6. Customer who don't have any dependents or partners are more prone to churn than those who do.
-7. Gender does not seem to have a significant impact on the churn decision. However, senior citizens are less likely to churn than non-senior citizens.
-8. Customers who use fiber optic internet service experience a higher churn rate compared to those who use other types of internet service.
-9. Additionally, payment method plays a significant role in churn decisions, with electronic check being the most frequently used method among churned customers.
-10. Customers who do not receive services like Tech Support, Device Protection, and Online Security tend to be more dissatisfied and are more likely to explore other options.
-
-## Suggestion
-1. Give special deals or fun packages for younger people so they want to stick around.
-2. Give gifts, discounts, or points if people sign up for longer contracts instead of month-to-month plans.
-3. Make cheaper plans that fit everyone’s needs better.
-4. Make a rewards program to thank people who stay longer, like free stuff or discounts.
-5. Make paying with electronic checks simpler and give prizes for setting up auto-pay
-
-## Tools and Technologies
-- **Data Visualization**: Power BI
-- **Data Preparation**: Excel for initial data cleaning and transformation
-- **Interactive Features**: Filters, slicers, and drill-down options in Power BI
-
-## Business Impact
-The insights provided by these dashboards can help the telecom company:
-- **Reduce Churn Rates**: By understanding the factors driving churn and implementing targeted retention strategies.
-- **Optimize Customer Support**: Prioritize support for high-risk customers and address their issues proactively.
-- **Enhance Customer Experience**: Use segmentation analysis to deliver personalized and value-driven experiences.
+2. Revenue Trends: Identification of sales trends over time (e.g., monthly, quarterly, yearly).
+3. Top-Performing Products: Products with the highest revenue contribution.
+4. Average order value (AOV) and frequency of purchases.
+5. High-performing regions contributing most to sales.
+6. Insights into profit margins across products and regions.
+7. ROI of marketing campaigns driving revenue growth.
+8. Potential areas for expansion or increased investment.
 
 ## Future Enhancements
-- **Predictive Modeling**: Integrate machine learning models to predict churn probability and automate churn prevention strategies.
-- **Advanced Segmentation**: Refine customer segments using more granular features for greater precision in risk analysis.
-- **Incorporate Real-Time Data**: Enhance the dashboards with real-time data feeds for dynamic churn analysis.
-
-## Installation and Setup
-1. Download the Power BI dashboard file from this repository.
-2. Open the file in Power BI Desktop.
-3. Connect to the telecom churn dataset (if needed) and refresh the data.
-4. Use the interactive visuals to explore and analyze customer churn.
+- **Predictive Modeling**: Integrate machine learning models to predict sales growth
+- **Incorporate Real-Time Data**: Enhance the dashboards with real-time data feeds for dynamic sales analysis.
 
 ## Contact
 - [Sahil Patra]
