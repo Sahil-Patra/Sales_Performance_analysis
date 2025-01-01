@@ -66,18 +66,20 @@ Total Profit: $286397.02
 
 '''top_products = df.groupby('product_name')['sales'].sum().sort_values(ascending=False).head(10)
 print("Top Products:\n", top_products)'''
- product_name
-Canon imageCLASS 2200 Advanced Copier                                          61599.824
-Fellowes PB500 Electric Punch Plastic Comb Binding Machine with Manual Bind    27453.384
-Cisco TelePresence System EX90 Videoconferencing Unit                          22638.480
-HON 5400 Series Task Chairs for Big and Tall                                   21870.576
-GBC DocuBind TL300 Electric Binding System                                     19823.479
-GBC Ibimaster 500 Manual ProClick Binding System                               19024.500
-Hewlett Packard LaserJet 3310 Copier                                           18839.686
-HP Designjet T520 Inkjet Large Format Printer - 24" Color                      18374.895
-GBC DocuBind P400 Electric Binding System                                      17965.068
-High Speed Automatic Electric Letter Opener                                    17030.312
-
+--------------------------------------------------------------------------------------------
+| product_name|                                                                            |
+--------------------------------------------------------------------------------------------
+|Canon imageCLASS 2200 Advanced Copier                                         | 61599.824 |
+|Fellowes PB500 Electric Punch Plastic Comb Binding Machine with Manual Bind   | 27453.384 |
+|Cisco TelePresence System EX90 Videoconferencing Unit                         | 22638.480 |
+|HON 5400 Series Task Chairs for Big and Tall                                  | 21870.576 |
+|GBC DocuBind TL300 Electric Binding System                                    | 19823.479 |
+|GBC Ibimaster 500 Manual ProClick Binding System                              | 19024.500 |
+|Hewlett Packard LaserJet 3310 Copier                                          | 18839.686 |
+|HP Designjet T520 Inkjet Large Format Printer - 24" Color                     | 18374.895 |
+|GBC DocuBind P400 Electric Binding System                                     | 17965.068 |
+|High Speed Automatic Electric Letter Opener                                   | 17030.312 |
+--------------------------------------------------------------------------------------------
 '''top_regions = df.groupby('region')['sales'].sum().sort_values(ascending=False)
 print("Top Regions:\n", top_regions)'''
 
@@ -122,6 +124,8 @@ sns.barplot(x=category_margin.index, y=category_margin.values)
 plt.title('Profit Margin by Category')
 plt.show()'''
 
+![Profit Margin By Category](assets/Jupyter_note/Images/Screenshot 2025-01-01 191236.png)
+
 category
 Furniture          0.038784
 Office Supplies    0.138030
@@ -136,16 +140,16 @@ plt.show()'''
 
 '''monthly_sales = ddf.groupby(pd.Grouper(key='order_date', freq='M'))['sales'].sum()
 
-# Decompose the time series
+### Decompose the time series
 result = seasonal_decompose(monthly_sales, model='additive', period=12)
 result.plot()
 plt.show()
 
-# Forecasting with Holt-Winters
+### Forecasting with Holt-Winters
 model = ExponentialSmoothing(monthly_sales, trend='add', seasonal='add', seasonal_periods=12).fit()
 forecast = model.forecast(12)
 
-# Plot forecast
+### Plot forecast
 plt.figure(figsize=(12,6))
 plt.plot(monthly_sales, label='Actual Sales')
 plt.plot(forecast, label='Forecasted Sales', linestyle='--')
