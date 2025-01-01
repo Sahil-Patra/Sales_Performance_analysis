@@ -71,7 +71,7 @@ top_products = df.groupby('product_name')['sales'].sum().sort_values(ascending=F
 print("Top Products:\n", top_products)
 ```
 
-| product_name |  |
+| product_name | Sales |
 | ----------------------------------------------------------------------------- | --------- |
 | Canon imageCLASS 2200 Advanced Copier                                         | 61599.824 |
 | Fellowes PB500 Electric Punch Plastic Comb Binding Machine with Manual Bind   | 27453.384 |
@@ -89,7 +89,7 @@ top_regions = df.groupby('region')['sales'].sum().sort_values(ascending=False)
 print("Top Regions:\n", top_regions)
 ```
 
-| region |  |
+| region | Sales |
 |----------|------------|
 | West     |  725457.8245
 | East     |  678781.2400
@@ -101,7 +101,7 @@ products = df.groupby('product_name')['profit'].sum().sort_values(ascending=Fals
 print("Top Products:\n", products)
 ```
 
-| product_name |  |
+| product_name | Profit |
 | ---------------------------------------------------------------------------- | ---------- |
 | Canon imageCLASS 2200 Advanced Copier                                        | 25199.9280 |
 | Fellowes PB500 Electric Punch Plastic Comb Binding Machine with Manual Bind  |  7753.0390 |
@@ -120,7 +120,7 @@ regions = df.groupby('region')['profit'].sum().sort_values(ascending=False)
 print("Top Regions:\n", regions)
 ```
 
-| region |  |
+| region | Pofit |
 | -------- | ----------- |
 | West      | 108418.4489 |
 | East      |  91522.7800 |
@@ -145,7 +145,7 @@ plt.show()
 ```
 
 
-| category | |
+| category | Average Profit |
 | ----------------- | -------- |
 | Furniture         | 0.038784 |
 | Office Supplies   | 0.138030 |
@@ -211,8 +211,8 @@ for key, value in dftest[4].items():
     dfoutput['Critical Value (%s)' %key] = value
 ```
 
-|Results of Dickey-Fuller Test: |
-|--------------------------------|-------------|
+|Results of Dickey-Fuller Test |  |
+| ------------------------------ | ----------- |
 | Test Statistic                 |  -98.890821 |
 | p-value                        |    0.000000 |
 | #lags Used                     |    0.000000 |
