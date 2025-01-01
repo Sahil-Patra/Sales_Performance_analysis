@@ -28,7 +28,7 @@ This project uses [tool/technology name] to collect, analyze, and visualize sale
 -  Performance Metrics: Easily accessible KPIs for decision-making.
 
 ##Project
-  ## **Project** : - [Customer-Chur-Dashboard](assets/Projects/Customer Churn Dashboard.pbix)
+  ## **Project** : -
 
 ## Dataset
 The dashboards are built using only one dataset, which is Superstore sales dataset, which includes detailed information about sales from 2019 to 2022. The dataset features:
@@ -55,20 +55,24 @@ The dashboards are built using only one dataset, which is Superstore sales datas
 ### Data Cleaning and Preparation
 The dataset was preprocessed to handle missing values, standardize categorical features, and transform the data for efficient analysis in Power BI. Outliers were examined and addressed where necessary to improve data quality.
 
-'''total_sales = df['sales'].sum()
+```python
+total_sales = df['sales'].sum()
 total_profit = df['profit'].sum()
 
 print(f"Total Sales: ${total_sales:.2f}")
-print(f"Total Profit: ${total_profit:.2f}")'''
+print(f"Total Profit: ${total_profit:.2f}")
+```
 
 Total Sales: $2297200.86
 Total Profit: $286397.02
 
-'''top_products = df.groupby('product_name')['sales'].sum().sort_values(ascending=False).head(10)
-print("Top Products:\n", top_products)'''
-|-------------------------------------------------------------------------------------------|
-| product_name                                                                              |
-|-------------------------------------------------------------------------------------------|
+```python
+top_products = df.groupby('product_name')['sales'].sum().sort_values(ascending=False).head(10)
+print("Top Products:\n", top_products)
+```
+
+| product_name |
+|-------------------------------------------------------------------------------|-----------|
 | Canon imageCLASS 2200 Advanced Copier                                         | 61599.824 |
 | Fellowes PB500 Electric Punch Plastic Comb Binding Machine with Manual Bind   | 27453.384 |
 | Cisco TelePresence System EX90 Videoconferencing Unit                         | 22638.480 |
@@ -79,25 +83,26 @@ print("Top Products:\n", top_products)'''
 | HP Designjet T520 Inkjet Large Format Printer - 24" Color                     | 18374.895 |
 | GBC DocuBind P400 Electric Binding System                                     | 17965.068 |
 | High Speed Automatic Electric Letter Opener                                   | 17030.312 |
-|-------------------------------------------------------------------------------------------|
-'''python
+
+```python
 top_regions = df.groupby('region')['sales'].sum().sort_values(ascending=False)
-print("Top Regions:\n", top_regions)'''
-|-----------------------|
+print("Top Regions:\n", top_regions)
+```
+
 | region |
-|-----------------------|
+|----------|------------|
 | West     |  725457.8245
 | East     |  678781.2400
 | Central  |  501239.8908
 | South    |  391721.9050
-|-----------------------|
 
-'''python
+```python
 products = df.groupby('product_name')['profit'].sum().sort_values(ascending=False).head(10)
-print("Top Products:\n", products)'''
-|-------------------------------------------------------------------------------------------|
+print("Top Products:\n", products)
+```
+
 | product_name |
-|-------------------------------------------------------------------------------------------|
+|------------------------------------------------------------------------------|------------|
 | Canon imageCLASS 2200 Advanced Copier                                        | 25199.9280 |
 | Fellowes PB500 Electric Punch Plastic Comb Binding Machine with Manual Bind  |  7753.0390 |
 | Hewlett Packard LaserJet 3310 Copier                                         |  6983.8836 |
@@ -108,78 +113,94 @@ print("Top Products:\n", products)'''
 | Plantronics Savi W720 Multi-Device Wireless Headset System                   |  3696.2820 |
 | Ibico EPK-21 Electric Binding System                                         |  3345.2823 |
 | Zebra ZM400 Thermal Label Printer                                            |  3343.5360 |
-|-------------------------------------------------------------------------------------------|
 
-'''python
+
+```python
 regions = df.groupby('region')['profit'].sum().sort_values(ascending=False)
-print("Top Regions:\n", regions)'''
-|------------------------|
+print("Top Regions:\n", regions)
+```
+
 | region |
-|------------------------|
+|----------|-------------|
 |West      | 108418.4489 |
 |East      |  91522.7800 |
 |South     |  46749.4303 |
 |Central   |  39706.3625 |
-|------------------------|
-'''python
+
+```python
 sns.barplot(x='discount', y='sales', data=df)
 plt.title('Discount vs Sales')
-plt.show()'''
+plt.show()
+```
 
-'''python
+![Profit Margin By Category](assets/Jupyter_note/S_S/Bar.png)
+
+```python
 category_margin = df.groupby('category')['profit_margin'].mean()
 print("Average Profit Margin by Category:\n", category_margin)
 
 sns.barplot(x=category_margin.index, y=category_margin.values)
 plt.title('Profit Margin by Category')
-plt.show()'''
+plt.show()
+```
 
-|------------------------------|
+
 | category |
-|------------------------------|
+|-------------------|----------|
 | Furniture         | 0.038784 |
 | Office Supplies   | 0.138030 |
 | Technology        | 0.156138 |
-|------------------------------|
-![Profit Margin By Category](assets/Jupyter_note/Images/Screenshot 2025-01-01 191236.png)
 
-'''python
+![Profit Margin By Category](assets/Jupyter_note/S_S/proft_margin.png)
+
+```python
 numerical_cols = ['sales', 'profit', 'discount', 'quantity', 'profit_margin']
 correlation_matrix = df[numerical_cols].corr()
 plt.figure(figsize=(8, 6))
 sns.heatmap(correlation_matrix, annot=True, cmap='Greens', fmt='.2f')
 plt.title('Correlation Matrix')
-plt.show()'''
+plt.show()
+```
 
-'''python
+![Profit Margin By Category](assets/Jupyter_note/S_S/Correlation_Matrix.png)
+
+```python
 monthly_sales = ddf.groupby(pd.Grouper(key='order_date', freq='M'))['sales'].sum()
 
 ### Decompose the time series
-'''python
+'''Python
 result = seasonal_decompose(monthly_sales, model='additive', period=12)
 result.plot()
-plt.show()'''
+plt.show()
+```
+
+![Profit Margin By Category](assets/Jupyter_note/S_S/Seasonal_Trend.png)
 
 ### Forecasting with Holt-Winters
-'''python
+```python
 model = ExponentialSmoothing(monthly_sales, trend='add', seasonal='add', seasonal_periods=12).fit()
-forecast = model.forecast(12)'''
+forecast = model.forecast(12)
+```
 
 ### Plot forecast
-'''python
+```python
 plt.figure(figsize=(12,6))
 plt.plot(monthly_sales, label='Actual Sales')
 plt.plot(forecast, label='Forecasted Sales', linestyle='--')
 plt.legend()
 plt.title('Sales Forecast')
-plt.show()'''
+plt.show()
+```
 
-'''python
+![Profit Margin By Category](assets/Jupyter_note/S_S/Forcasting.png)
+
+```python
 ddf['year_month'] = ddf['order_date'].dt.to_period('M')
 monthly_sales = ddf.groupby('year_month')['sales'].sum().reset_index()
-monthly_sales['sales_growth'] = monthly_sales['sales'].pct_change() * 100'''
+monthly_sales['sales_growth'] = monthly_sales['sales'].pct_change() * 100
+```
 
-'''python
+```python
 from statsmodels.tsa.stattools import adfuller
 
 print('Results of Dickey-Fuller Test:')
@@ -187,10 +208,11 @@ dftest = adfuller(df['sales'], autolag = 'AIC')
 
 dfoutput = pd.Series(dftest[0:4], index = ['Test Statistic' , 'p-value', '#lags Used', ' Number of Observations Used'])
 for key, value in dftest[4].items():
-    dfoutput['Critical Value (%s)' %key] = value'''
-|----------------------------------------------|
+    dfoutput['Critical Value (%s)' %key] = value
+```
+
 |Results of Dickey-Fuller Test: |
-|----------------------------------------------|
+|--------------------------------|-------------|
 | Test Statistic                 |  -98.890821 |
 | p-value                        |    0.000000 |
 | #lags Used                     |    0.000000 |
@@ -198,7 +220,7 @@ for key, value in dftest[4].items():
 | Critical Value (1%)            |   -3.431005 |
 | Critical Value (5%)            |   -2.861829 |
 | Critical Value (10%)           |   -2.566924 |
-|----------------------------------------------|
+
 
 ## Key Insights
 1. Certain age groups and geographic regions show higher churn rates. Senior citzens are less likely to churn than non-senior citizens.
